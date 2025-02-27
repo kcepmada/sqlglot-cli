@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 import unittest
@@ -9,7 +10,7 @@ class TestSQLGlotCLI(unittest.TestCase):
             {
                 "name": "flagshipGnnEmbedding300",
                 "source": "SELECT embedding['tensor']['staticDense']['values']['floats'] as flagshipGnnEmbedding300 from tracking.FeedIndexingGNNActivityEmbedding",
-                "target": "[\"SELECT embedding['tensor']['staticDense']['values']['floats'] AS flagshipGnnEmbedding300 FROM tracking.FeedIndexingGNNActivityEmbedding\"]",
+                "target": ["SELECT embedding['tensor']['staticDense']['values']['floats'] AS flagshipGnnEmbedding300 FROM tracking.FeedIndexingGNNActivityEmbedding"],
             }
         ]
 
@@ -21,8 +22,8 @@ class TestSQLGlotCLI(unittest.TestCase):
                     stderr=subprocess.PIPE,
                 )
                 stdout, stderr = process.communicate()
-                self.assertEqual(stdout.decode().strip(), case["target"])
-
+                self.assertEqual(stderr.decode().strip(), "")
+                self.assertEqual(json.loads(stdout.decode()), case["target"])
 
 if __name__ == "__main__":
     unittest.main()
