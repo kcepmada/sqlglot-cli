@@ -48,7 +48,8 @@ def main(args=None):
     )
 
     # Result
-    print(sql)
+    for stmt in sql:
+        print(stmt)
 
 
 if __name__ == "__main__":
